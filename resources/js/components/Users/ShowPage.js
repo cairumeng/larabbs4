@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Moment from 'react-moment';
+
+
 
 const ShowPage = ({user}) => {
     return (
@@ -11,7 +14,9 @@ const ShowPage = ({user}) => {
                     <div className="card-body">
                        <div>{user.description || "You haven't published any description!"}</div> 
                        <hr/>
-                       <div>{user.created_at}</div> 
+                       <div>
+                       <Moment fromNow>{user.created_at}</Moment>
+                    </div> 
                         </div>
                     </div>
                 </div>

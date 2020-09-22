@@ -63,7 +63,7 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a href="" class="dropdown-item">
+                                <a href="{{route('users.show',Auth::user())}}" class="dropdown-item">
                                     <i class="far fa-user mr-2"></i>
                                     My profile
                                 </a>
