@@ -87451,20 +87451,25 @@ var EditPage = function EditPage(_ref) {
       type = _useState6[0],
       setType = _useState6[1];
 
-  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
+  var _useState7 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({}),
       _useState8 = _slicedToArray(_useState7, 2),
-      name = _useState8[0],
-      setName = _useState8[1];
+      errors = _useState8[0],
+      setErrors = _useState8[1];
 
   var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
       _useState10 = _slicedToArray(_useState9, 2),
-      email = _useState10[0],
-      setEmail = _useState10[1];
+      name = _useState10[0],
+      setName = _useState10[1];
 
   var _useState11 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
       _useState12 = _slicedToArray(_useState11, 2),
-      description = _useState12[0],
-      setDescription = _useState12[1];
+      email = _useState12[0],
+      setEmail = _useState12[1];
+
+  var _useState13 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
+      _useState14 = _slicedToArray(_useState13, 2),
+      description = _useState14[0],
+      setDescription = _useState14[1];
 
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     setName(user.name);
@@ -87480,13 +87485,12 @@ var EditPage = function EditPage(_ref) {
       email: email,
       description: description
     }).then(function (res) {
-      if (res.data.success) {
-        setVisibility(true);
-        setType('success');
-        setMessage(res.data.success);
-      }
+      setVisibility(true);
+      setType('success');
+      setMessage(res.data.success);
+      setErrors({});
     })["catch"](function (err) {
-      console.log(err);
+      setErrors(err.response.data.errors);
     });
   };
 
@@ -87521,7 +87525,9 @@ var EditPage = function EditPage(_ref) {
     onChange: function onChange(e) {
       return setName(e.target.value);
     }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }), errors.name && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "text-danger"
+  }, errors.name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-group"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
     htmlFor: "email"
@@ -87533,7 +87539,9 @@ var EditPage = function EditPage(_ref) {
     onChange: function onChange(e) {
       return setEmail(e.target.value);
     }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }), errors.email && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "text-danger"
+  }, errors.email)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-group"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
     htmlFor: "description"
@@ -87546,7 +87554,9 @@ var EditPage = function EditPage(_ref) {
     onChange: function onChange(e) {
       return setDescription(e.target.value);
     }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+  }), errors.description && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "text-danger"
+  }, errors.description)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     type: "submit",
     className: "btn btn-primary",
     onClick: profileEditHandler

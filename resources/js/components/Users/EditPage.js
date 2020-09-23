@@ -6,6 +6,7 @@ const EditPage = ({ user }) => {
     const [visibility, setVisibility] = useState(false)
     const [message, setMessage] = useState('')
     const [type, setType] = useState('')
+    const [errors, setErrors] = useState({})
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -23,14 +24,13 @@ const EditPage = ({ user }) => {
         axios
             .patch(`/users/${user.id}`, { name, email, description })
             .then(res => {
-                if (res.data.success) {
-                    setVisibility(true)
-                    setType('success')
-                    setMessage(res.data.success)
-                }
+                setVisibility(true)
+                setType('success')
+                setMessage(res.data.success)
+                setErrors({})
             })
             .catch(err => {
-                console.log(err)
+                setErrors(err.response.data.errors)
             })
     }
 
@@ -63,6 +63,11 @@ const EditPage = ({ user }) => {
                                     value={name}
                                     onChange={e => setName(e.target.value)}
                                 />
+                                {errors.name && (
+                                    <div className="text-danger">
+                                        {errors.name}
+                                    </div>
+                                )}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="email">Email</label>
@@ -73,6 +78,11 @@ const EditPage = ({ user }) => {
                                     value={email}
                                     onChange={e => setEmail(e.target.value)}
                                 />
+                                {errors.email && (
+                                    <div className="text-danger">
+                                        {errors.email}
+                                    </div>
+                                )}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="description">Description</label>
@@ -86,6 +96,11 @@ const EditPage = ({ user }) => {
                                         setDescription(e.target.value)
                                     }
                                 />
+                                {errors.description && (
+                                    <div className="text-danger">
+                                        {errors.description}
+                                    </div>
+                                )}
                             </div>
                             <button
                                 type="submit"
