@@ -11,18 +11,20 @@ const EditPage = ({ user }) => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [description, setDescription] = useState('')
+    const [avatar, setAvatar] = useState('')
 
     useEffect(() => {
         setName(user.name)
         setEmail(user.email)
         setDescription(user.description)
+        setAvatar(user.avatar)
     }, [])
 
     const profileEditHandler = e => {
         e.preventDefault()
         e.stopPropagation()
         axios
-            .patch(`/users/${user.id}`, { name, email, description })
+            .patch(`/users/${user.id}`, { name, email, description, avatar })
             .then(res => {
                 setVisibility(true)
                 setType('success')
@@ -32,6 +34,28 @@ const EditPage = ({ user }) => {
             .catch(err => {
                 setErrors(err.response.data.errors)
             })
+    }
+
+    const uploadFileHandler = e => {
+        const file = e.target.files[0]
+        uploadFile(file)
+            .then(res => {
+                setAvatar(res.data.path)
+                setErrors({})
+            })
+            .catch(err => {
+                setErrors(err.response.data.errors)
+            })
+    }
+
+    const uploadFile = file => {
+        const formData = new FormData()
+        formData.append('file', file)
+        return axios.post(`/users/${user.id}/upload_avatar`, formData, {
+            headers: {
+                'Contente-Type': 'multipart/form-data',
+            },
+        })
     }
 
     return (
@@ -54,6 +78,26 @@ const EditPage = ({ user }) => {
                     <div className="card-header">Edit</div>
                     <div className="card-body">
                         <form>
+                            <div className="form-group">
+                                {avatar && (
+                                    <div>
+                                        <img
+                                            className="thumbnail img-responsive edit-avatar"
+                                            src={avatar}
+                                        />
+                                    </div>
+                                )}
+                                <input
+                                    type="file"
+                                    name="avatar"
+                                    onChange={uploadFileHandler}
+                                />
+                                {errors.avatar && (
+                                    <div className="text-danger">
+                                        {errors.avatar}
+                                    </div>
+                                )}
+                            </div>
                             <div className="form-group">
                                 <label htmlFor="name">Username</label>
                                 <input
@@ -102,6 +146,7 @@ const EditPage = ({ user }) => {
                                     </div>
                                 )}
                             </div>
+
                             <button
                                 type="submit"
                                 className="btn btn-primary"

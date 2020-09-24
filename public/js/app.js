@@ -87471,10 +87471,16 @@ var EditPage = function EditPage(_ref) {
       description = _useState14[0],
       setDescription = _useState14[1];
 
+  var _useState15 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
+      _useState16 = _slicedToArray(_useState15, 2),
+      avatar = _useState16[0],
+      setAvatar = _useState16[1];
+
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     setName(user.name);
     setEmail(user.email);
     setDescription(user.description);
+    setAvatar(user.avatar);
   }, []);
 
   var profileEditHandler = function profileEditHandler(e) {
@@ -87483,7 +87489,8 @@ var EditPage = function EditPage(_ref) {
     axios__WEBPACK_IMPORTED_MODULE_2___default.a.patch("/users/".concat(user.id), {
       name: name,
       email: email,
-      description: description
+      description: description,
+      avatar: avatar
     }).then(function (res) {
       setVisibility(true);
       setType('success');
@@ -87491,6 +87498,26 @@ var EditPage = function EditPage(_ref) {
       setErrors({});
     })["catch"](function (err) {
       setErrors(err.response.data.errors);
+    });
+  };
+
+  var uploadFileHandler = function uploadFileHandler(e) {
+    var file = e.target.files[0];
+    uploadFile(file).then(function (res) {
+      setAvatar(res.data.path);
+      setErrors({});
+    })["catch"](function (err) {
+      setErrors(err.response.data.errors);
+    });
+  };
+
+  var uploadFile = function uploadFile(file) {
+    var formData = new FormData();
+    formData.append('file', file);
+    return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("/users/".concat(user.id, "/upload_avatar"), formData, {
+      headers: {
+        'Contente-Type': 'multipart/form-data'
+      }
     });
   };
 
@@ -87514,6 +87541,17 @@ var EditPage = function EditPage(_ref) {
   }, "Edit"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "card-body"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "form-group"
+  }, avatar && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    className: "thumbnail img-responsive edit-avatar",
+    src: avatar
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "file",
+    name: "avatar",
+    onChange: uploadFileHandler
+  }), errors.avatar && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "text-danger"
+  }, errors.avatar)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-group"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
     htmlFor: "name"

@@ -19,3 +19,4 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::resource('users', 'UsersController')->only(['show', 'edit', 'update']);
+Route::post('users/{user}/upload_avatar', 'UsersController@uploadAvatar');

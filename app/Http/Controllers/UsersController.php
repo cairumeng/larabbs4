@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
+use App\Handlers\ImageUploadHandler;
+
 
 class UsersController extends Controller
 {
@@ -19,6 +22,7 @@ class UsersController extends Controller
 
     public function update(User $user, UserRequest $request)
     {
+
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -28,5 +32,19 @@ class UsersController extends Controller
         return response()->json([
             'success' => 'You have updated your profile!'
         ]);
+    }
+
+    public function uploadAvatar(User $user, Request $request, ImageUploadHandler $uploader)
+    {
+        $result = $uploader->save($request->file, 'avatars', $user->id, 416);
+
+        if ($result) {
+            return response()->json([
+                'path' => $result['path']
+            ]);
+        }
+        return response()->json([
+            'errors' => ['avatar' => 'fail to upload!']
+        ], 422);
     }
 }
