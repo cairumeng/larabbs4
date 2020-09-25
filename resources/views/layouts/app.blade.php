@@ -39,6 +39,22 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                        <li class="nav-item mr-3">
+                            <a href="/posts?categoryId=1"
+                                class="text-{{request()->get('categoryId')==="1"?'dark':'muted'}}">Share</a>
+                        </li>
+                        <li class="nav-item mr-3">
+                            <a href="/posts?categoryId=2"
+                                class="text-{{request()->get('categoryId')==="2"?'dark':'muted'}}">Course</a>
+                        </li>
+                        <li class="nav-item mr-3">
+                            <a href="/posts?categoryId=3"
+                                class="text-{{request()->get('categoryId')==="3"?'dark':'muted'}}">Q&A</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/posts?categoryId=4"
+                                class="text-{{request()->get('categoryId')==="4"?'dark':'muted'}}"> Annoucement</a>
+                        </li>
 
                     </ul>
 
@@ -67,7 +83,7 @@
                                     <i class="far fa-user mr-2"></i>
                                     My profile
                                 </a>
-                                <a href="" class="dropdown-item">
+                                <a href="{{route('posts.index')}}" class="dropdown-item">
                                     <i class="far fa-clone mr-2"></i>
                                     My posts
                                 </a>

@@ -14,3 +14,4 @@ require('./bootstrap')
 
 require('./components/Users/ShowPage')
 require('./components/Users/EditPage')
+require('./components/Posts/IndexPage')

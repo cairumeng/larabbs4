@@ -18,12 +18,24 @@ use Faker\Generator as Faker;
 
 $factory->define(User::class, function (Faker $faker) {
     $updated_at = $faker->dateTimeThisDecade();
+    $avatars = [
+        'http://localhost:8000/images/avatars/default_avatar.png',
+        'https://cdn.learnku.com/uploads/images/201710/14/1/s5ehp11z6s.png',
+        'https://cdn.learnku.com/uploads/images/201710/14/1/Lhd1SHqu86.png',
+        'https://cdn.learnku.com/uploads/images/201710/14/1/LOnMrqbHJn.png',
+        'https://cdn.learnku.com/uploads/images/201710/14/1/xAuDMxteQy.png',
+        'https://cdn.learnku.com/uploads/images/201710/14/1/ZqM7iaP4CR.png',
+        'https://cdn.learnku.com/uploads/images/201710/14/1/NDnzMutoxX.png',
+
+
+    ];
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => null,
         'password' => bcrypt(12345678), // password
         'remember_token' => null,
+        'avatar' => $faker->randomElement($avatars),
         'description' => $faker->sentence(),
         'updated_at' => $updated_at,
         'created_at' => $faker->dateTimeThisDecade($updated_at),

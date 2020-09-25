@@ -1,7 +1,5 @@
 <?php
 
-use UsersTableSeeder;
-use CategoriesTableSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
