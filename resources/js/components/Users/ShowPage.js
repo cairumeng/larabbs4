@@ -4,7 +4,6 @@ import Moment from 'react-moment'
 import Pagination from '../util/Pagination'
 
 const ShowPage = ({ user }) => {
-  console.log(user.posts)
   return (
     <div className="container">
       <div className="row">
@@ -50,11 +49,19 @@ const ShowPage = ({ user }) => {
                   </a>
                 </li>
               </ul>
-              {user.posts.data.map(post => (
-                <li key={post.id}>{post.title}</li>
-              ))}
-
-              <Pagination paginator={user.posts} />
+              <ul className="list-unstyled">
+                {user.posts.data.map(post => (
+                  <li key={post.id} className=" mt-3 ">
+                    {post.title}
+                    <span className="float-right">
+                      <Moment fromNow>{user.created_at}</Moment>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <div className="pagination justify-content-center">
+                <Pagination paginator={user.posts} />
+              </div>
             </div>
           </div>
         </div>

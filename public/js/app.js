@@ -87732,7 +87732,6 @@ __webpack_require__.r(__webpack_exports__);
 
 var ShowPage = function ShowPage(_ref) {
   var user = _ref.user;
-  console.log(user.posts);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -87773,13 +87772,22 @@ var ShowPage = function ShowPage(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     className: "nav-link",
     href: "#"
-  }, user.name, "'s replies"))), user.posts.data.map(function (post) {
+  }, user.name, "'s replies"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: "list-unstyled"
+  }, user.posts.data.map(function (post) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-      key: post.id
-    }, post.title);
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_util_Pagination__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      key: post.id,
+      className: " mt-3 "
+    }, post.title, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      className: "float-right"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_moment__WEBPACK_IMPORTED_MODULE_2___default.a, {
+      fromNow: true
+    }, user.created_at)));
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "pagination justify-content-center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_util_Pagination__WEBPACK_IMPORTED_MODULE_3__["default"], {
     paginator: user.posts
-  }))))));
+  })))))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (ShowPage);
@@ -87830,7 +87838,8 @@ var Pagination = function Pagination(_ref) {
   };
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
-    "aria-label": "Page navigation example"
+    "aria-label": "Page navigation example",
+    className: "mt-5"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: "pagination"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
