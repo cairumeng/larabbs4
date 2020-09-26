@@ -16,7 +16,7 @@ const Pagination = ({ paginator }) => {
 
   const getPageLink = page => `${paginator.path}?page=${page}`
   return (
-    <nav aria-label="Page navigation example">
+    <nav aria-label="Page navigation example" className="mt-5">
       <ul className="pagination">
         <li className="page-item">
           <a
