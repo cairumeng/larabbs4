@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
@@ -40,5 +42,18 @@ class PostsController extends Controller
     public function create()
     {
         return view('posts.create');
+    }
+
+    public function store(PostRequest $request, Post $post)
+    {
+        $post->create([
+            'title' => $request->title,
+            'category_id' => $request->category,
+            'user_id' => Auth::id(),
+            'body' => $request->body
+        ]);
+        return response()->json([
+            'success' => 'You have created a new post!'
+        ]);
     }
 }

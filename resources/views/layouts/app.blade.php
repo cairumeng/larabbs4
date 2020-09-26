@@ -12,6 +12,11 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script type="text/javascript" src="[script path]/jquery.min.js"></script>
+    <script type="text/javascript" src="[script path]/module.js"></script>
+    <script type="text/javascript" src="[script path]/hotkeys.js"></script>
+    <script type="text/javascript" src="[script path]/uploader.js"></script>
+    <script type="text/javascript" src="[script path]/simditor.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -21,6 +26,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="[style path]/simditor.css" />
 </head>
 
 <body>

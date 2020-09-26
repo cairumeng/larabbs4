@@ -34,7 +34,7 @@ class UserRequest extends FormRequest
     {
         return [
             'name.required' => 'Username coud not be empty!',
-            'name.between' => 'Username should between three to 25 character.',
+            'name.between' => 'Username should between three to 25 characters.',
             'name.regex' => 'Username should be letter,number,hyphen,underscore',
             'email.email' => 'Your email format is not correct',
             'description.max' => 'Your description could not be larger than 80'
