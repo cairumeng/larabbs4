@@ -36,4 +36,9 @@ class PostsController extends Controller
 
         return view('posts.index', $response);
     }
+
+    public function create()
+    {
+        return view('posts.create');
+    }
 }
