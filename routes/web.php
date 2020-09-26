@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', 'PostsController@index')->name('home');
 
 Route::resource('users', 'UsersController')->only(['show', 'edit', 'update']);
 Route::post('users/{user}/upload_avatar', 'UsersController@uploadAvatar');
-Route::resource('posts', 'PostsController')->only(['index', 'show', 'edit', 'update']);
+Route::resource('posts', 'PostsController')->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
 
 Route::resource('categories', 'CategoriesController')->only(['show']);

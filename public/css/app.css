@@ -10907,3 +10907,7 @@ a.text-dark:focus {
   height: 50px;
 }
 
+#users-show-page .list-unstyled li {
+  border-bottom: solid 1px whitesmoke;
+}
+

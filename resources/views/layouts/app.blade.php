@@ -71,7 +71,11 @@
                         </li>
                         @endif
                         @else
+                        <li class="nav-item my-auto mr-2"> <a href="{{route('posts.create')}}"><i
+                                    class="fas fa-plus"></i></a>
+                        </li>
                         <li class="nav-item dropdown">
+
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 <img src="{{ Auth::user()->avatar }}" alt="avatar" class="nav-avatar">
@@ -83,9 +87,9 @@
                                     <i class="far fa-user mr-2"></i>
                                     My profile
                                 </a>
-                                <a href="{{route('posts.index')}}" class="dropdown-item">
+                                <a href="{{route('users.edit', Auth::user())}}" class="dropdown-item">
                                     <i class="far fa-clone mr-2"></i>
-                                    My posts
+                                    Edit profile
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();

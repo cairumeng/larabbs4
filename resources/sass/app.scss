@@ -8,8 +8,13 @@
 @import '~bootstrap/scss/bootstrap';
 
 .nav-avatar {
-    height: 25px;
+  height: 25px;
 }
 .edit-avatar {
-    height: 50px;
+  height: 50px;
+}
+#users-show-page {
+  .list-unstyled li {
+    border-bottom: solid 1px whitesmoke;
+  }
 }
