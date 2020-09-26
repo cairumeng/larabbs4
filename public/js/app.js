@@ -87724,12 +87724,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-moment */ "./node_modules/react-moment/dist/index.js");
 /* harmony import */ var react_moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_moment__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _util_Pagination__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../util/Pagination */ "./resources/js/components/util/Pagination.js");
+
 
 
 
 
 var ShowPage = function ShowPage(_ref) {
   var user = _ref.user;
+  console.log(user.posts);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -87752,13 +87755,31 @@ var ShowPage = function ShowPage(_ref) {
     className: "card"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "card-body"
-  }, ' ', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
     className: "d-inline mr-3"
-  }, user.name), ' ', user.email)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, user.name), " ", user.email)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "card mt-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "card-body"
-  }, "No data ~_~")))));
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: "nav nav-tabs"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+    className: "nav-item"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "nav-link active",
+    href: "/posts?userId=".concat(user.id)
+  }, user.name, "'s posts")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+    className: "nav-item"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "nav-link",
+    href: "#"
+  }, user.name, "'s replies"))), user.posts.data.map(function (post) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      key: post.id
+    }, post.title);
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_util_Pagination__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    paginator: user.posts
+  }))))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (ShowPage);
@@ -87769,6 +87790,71 @@ if (showPageDom) {
     user: JSON.parse(showPageDom.dataset.user)
   }), showPageDom);
 }
+
+/***/ }),
+
+/***/ "./resources/js/components/util/Pagination.js":
+/*!****************************************************!*\
+  !*** ./resources/js/components/util/Pagination.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+function range(start, end) {
+  var ans = [];
+
+  for (var i = start; i <= end; i++) {
+    ans.push(i);
+  }
+
+  return ans;
+}
+
+var Pagination = function Pagination(_ref) {
+  var paginator = _ref.paginator;
+  var start = Math.max(paginator.current_page - 3, 1);
+  var end = Math.min(paginator.current_page + 3, paginator.last_page);
+  var links = range(start, end);
+
+  var getPageLink = function getPageLink(page) {
+    return "".concat(paginator.path, "?page=").concat(page);
+  };
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
+    "aria-label": "Page navigation example"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: "pagination"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+    className: "page-item"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "page-link",
+    href: getPageLink(Math.max(paginator.current_page - 1, 1))
+  }, "Previous")), links.map(function (link) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      key: link,
+      className: "page-item ".concat(link === paginator.current_page && 'active')
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+      className: "page-link",
+      href: getPageLink(link)
+    }, link));
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+    className: "page-item"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "page-link",
+    href: getPageLink(Math.min(paginator.current_page + 1, paginator.last_page))
+  }, "Next"))));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Pagination);
 
 /***/ }),
 

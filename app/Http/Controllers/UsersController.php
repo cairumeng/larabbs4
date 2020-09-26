@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Handlers\ImageUploadHandler;
 
-
 class UsersController extends Controller
 {
     public function __construct()
@@ -16,6 +15,7 @@ class UsersController extends Controller
     }
     public function show(User $user)
     {
+        $user->posts = $user->posts()->paginate();
         return view('users.show', compact('user'));
     }
 
