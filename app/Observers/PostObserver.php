@@ -9,7 +9,6 @@ class PostObserver
 {
     public function saving(Post $post)
     {
-        dd(5555);
         $post->body = Purifier::clean($post->body);
     }
 }

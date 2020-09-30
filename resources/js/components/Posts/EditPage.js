@@ -34,6 +34,7 @@ const EditPage = ({ post }) => {
         setType('success')
         setMessage(res.data.success)
         setErrors({})
+        window.location.href = `/posts/${res.data.post.id}`
       })
       .catch(err => {
         setErrors(err.response.data.errors)

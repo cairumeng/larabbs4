@@ -1,10 +1,44 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import Moment from 'react-moment'
 
-const ShowPage = ({ post }) => {
+const ShowPage = ({ post, authUser }) => {
+  const [visibility, setVisibility] = useState(false)
+  const [message, setMessage] = useState('')
+  const [type, setType] = useState('')
+  const [errors, setErrors] = useState({})
+
+  const deleteHandler = e => {
+    e.preventDefault()
+    e.stopPropagation()
+    axios
+      .delete(`/posts/${post.id}`)
+      .then(res => {
+        setVisibility(true)
+        setType('success')
+        setMessage(res.data.success)
+        setErrors({})
+        window.location.href = `/posts`
+      })
+      .catch(err => {
+        setErrors(err.response.data.errors)
+      })
+  }
   return (
     <div className="container">
+      {visibility && (
+        <div className={`alert alert-${type}`}>
+          <button
+            type="button"
+            className="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <p>{message}</p>
+        </div>
+      )}
       <div className="row">
         <div className="col-md-3">
           <div className="card">
@@ -37,12 +71,21 @@ const ShowPage = ({ post }) => {
             <div className="card-body">
               <h1>{post.title}</h1>
               <div dangerouslySetInnerHTML={{ __html: post.body }} />
-              <a href={`/posts/${post.id}/edit`} className="btn btn-light mr-3">
-                Edit
-              </a>
-              <a href="" className="btn btn-light">
-                Delete
-              </a>
+              {authUser.id === post.user.id && (
+                <div>
+                  <a
+                    href={`/posts/${post.id}/edit`}
+                    className="btn btn-light mr-3"
+                  >
+                    Edit
+                  </a>
+                  <form className="d-inline">
+                    <a className="btn btn-light" onClick={deleteHandler}>
+                      Delete
+                    </a>
+                  </form>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -56,7 +99,10 @@ export default ShowPage
 const showPageDom = document.getElementById('posts-show-page')
 if (showPageDom) {
   ReactDOM.render(
-    <ShowPage post={JSON.parse(showPageDom.dataset.post)} />,
+    <ShowPage
+      post={JSON.parse(showPageDom.dataset.post)}
+      authUser={JSON.parse(showPageDom.dataset.authUser)}
+    />,
     showPageDom
   )
 }

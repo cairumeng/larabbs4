@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => 'index']);
+    }
     public function index(Request $request)
     {
         $response = [];
@@ -61,17 +65,33 @@ class PostsController extends Controller
     public function show(Post $post)
     {
         $post->user = $post->user()->first();
-        return view('posts.show',  compact('post'));
+        $response['post'] = $post;
+        $response['authUser'] = Auth::user();
+        return view('posts.show',  $response);
     }
 
     public function edit(Post $post)
     {
+        $this->authorize('update', $post);
         return view('posts.edit',  compact('post'));
     }
 
     public function update(Post $post, PostRequest $request)
     {
+        $this->authorize('update', $post);
         $post->update($request->all());
-        return view('posts.show',  compact('post'));
+        return response()->json([
+            'success' => 'You have updated a new post!',
+            'post' => $post
+        ]);
+    }
+
+    public function destroy(Post $post)
+    {
+        $this->authorize('destroy', $post);
+        $post->delete();
+        return response()->json([
+            'success' => 'You have deleted a new post!',
+        ]);
     }
 }
