@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use Illuminate\Support\Facades\Auth;
+use SebastianBergmann\Environment\Console;
 
 class PostsController extends Controller
 {
@@ -65,7 +66,9 @@ class PostsController extends Controller
     public function show(Post $post)
     {
         $post->user = $post->user()->first();
+        $replies = $post->replies()->with('user')->paginate(15);
         $response['post'] = $post;
+        $response['replies'] = $replies;
         $response['authUser'] = Auth::user();
         return view('posts.show',  $response);
     }

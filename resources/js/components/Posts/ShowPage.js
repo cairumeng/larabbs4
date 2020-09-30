@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import Moment from 'react-moment'
-
-const ShowPage = ({ post, authUser }) => {
+import Pagination from '../util/Pagination'
+const ShowPage = ({ post, authUser, replies }) => {
   const [visibility, setVisibility] = useState(false)
   const [message, setMessage] = useState('')
   const [type, setType] = useState('')
@@ -88,6 +88,43 @@ const ShowPage = ({ post, authUser }) => {
               )}
             </div>
           </div>
+          <div className="card mt-3">
+            <div className="card-body">
+              <ul className="list-unstyled">
+                {replies.data.map(reply => (
+                  <li key={reply.id} className="mt-3">
+                    <div className="media">
+                      <a href={`/users/${reply.user_id}`}>
+                        <img
+                          className="mr-3 edit-avatar"
+                          src={reply.user.avatar}
+                          alt="Generic placeholder image"
+                        />
+                      </a>
+                      <div className="media-body">
+                        <div className="mt-0">
+                          <a href={`/users/${reply.user_id}`}>
+                            {reply.user.name}
+                          </a>
+                          <div className="d-inline">
+                            <i className="far fa-clock mr-2 ml-3 mr-2" />
+                            <Moment fromNow>{reply.created_at}</Moment>
+                          </div>
+                          <div className="d-inline float-right">
+                            <i className="far fa-trash-alt"></i>
+                          </div>
+                        </div>
+                        <div>{reply.content}</div>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+                <div className="pagination justify-content-center">
+                  <Pagination paginator={replies} />
+                </div>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -102,6 +139,7 @@ if (showPageDom) {
     <ShowPage
       post={JSON.parse(showPageDom.dataset.post)}
       authUser={JSON.parse(showPageDom.dataset.authUser)}
+      replies={JSON.parse(showPageDom.dataset.replies)}
     />,
     showPageDom
   )
