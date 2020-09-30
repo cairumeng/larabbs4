@@ -41,7 +41,9 @@ const IndexPage = ({ posts }) => {
                         alt="Generic placeholder image"
                       />
                       <div className="media-body">
-                        <h5 className="mt-0">{post.title}</h5>
+                        <h5 className="mt-0">
+                          <a href={`/posts/${post.id}`}>{post.title}</a>
+                        </h5>
                         <div>
                           <i className="far fa-folder mr-2" />
                           <a href={`/posts?categoryId=${post.category_id}`}>

@@ -2,15 +2,18 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
 import { EditorState, convertToRaw } from 'draft-js'
+import { stateFromHTML } from 'draft-js-import-html'
 import draftToHtml from 'draftjs-to-html'
 import { Editor } from 'react-draft-wysiwyg'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import './CreatePage.scss'
 
-const CreatePage = () => {
-  const [title, setTitle] = useState('')
-  const [category, setCategory] = useState(1)
-  const [body, setBody] = useState(EditorState.createEmpty())
+const EditPage = ({ post }) => {
+  const [title, setTitle] = useState(post.title)
+  const [category, setCategory] = useState(post.category_id)
+  const [body, setBody] = useState(
+    EditorState.createWithContent(stateFromHTML(post.body))
+  )
 
   const [visibility, setVisibility] = useState(false)
   const [message, setMessage] = useState('')
@@ -21,7 +24,7 @@ const CreatePage = () => {
     e.preventDefault()
     e.stopPropagation()
     axios
-      .post('/posts', {
+      .patch(`/posts/${post.id}`, {
         title,
         category,
         body: draftToHtml(convertToRaw(body.getCurrentContent())),
@@ -31,8 +34,6 @@ const CreatePage = () => {
         setType('success')
         setMessage(res.data.success)
         setErrors({})
-
-        window.location.href = `/posts/${res.data.post.id}`
       })
       .catch(err => {
         setErrors(err.response.data.errors)
@@ -72,7 +73,7 @@ const CreatePage = () => {
         </div>
       )}
       <div className="card">
-        <div className="card-header">New Post</div>
+        <div className="card-header">Edit Post</div>
         <div className="card-body">
           <form>
             <div className="form-group">
@@ -109,6 +110,7 @@ const CreatePage = () => {
               <Editor
                 editorClassName="editor"
                 editorState={body}
+                placeholder={post.body}
                 localization={{
                   locale: 'en',
                 }}
@@ -133,7 +135,7 @@ const CreatePage = () => {
               className="btn btn-primary"
               onClick={submitHandler}
             >
-              Create
+              Edit
             </button>
           </form>
         </div>
@@ -141,8 +143,11 @@ const CreatePage = () => {
     </div>
   )
 }
-export default CreatePage
-const createPageDom = document.getElementById('posts-create-page')
-if (createPageDom) {
-  ReactDOM.render(<CreatePage />, createPageDom)
+export default EditPage
+const editPageDom = document.getElementById('post-edit-page')
+if (editPageDom) {
+  ReactDOM.render(
+    <EditPage post={JSON.parse(editPageDom.dataset.post)} />,
+    editPageDom
+  )
 }
