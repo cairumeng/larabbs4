@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Handlers\ImageUploadHandler;
 use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -36,7 +35,6 @@ class PostsController extends Controller
 
         $posts = $query->paginate(20);
         $response['posts'] = $posts;
-
         return view('posts.index', $response);
     }
 
@@ -47,14 +45,33 @@ class PostsController extends Controller
 
     public function store(PostRequest $request, Post $post)
     {
-        $post->create([
+        $post = $post->create([
             'title' => $request->title,
             'category_id' => $request->category,
             'user_id' => Auth::id(),
             'body' => $request->body
         ]);
+
         return response()->json([
-            'success' => 'You have created a new post!'
+            'success' => 'You have created a new post!',
+            'post' => $post
         ]);
+    }
+
+    public function show(Post $post)
+    {
+        $post->user = $post->user()->first();
+        return view('posts.show',  compact('post'));
+    }
+
+    public function edit(Post $post)
+    {
+        return view('posts.edit',  compact('post'));
+    }
+
+    public function update(Post $post, PostRequest $request)
+    {
+        $post->update($request->all());
+        return view('posts.show',  compact('post'));
     }
 }
