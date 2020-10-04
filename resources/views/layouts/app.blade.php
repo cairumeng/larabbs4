@@ -74,6 +74,14 @@
                         </li>
                         @endif
                         @else
+                        <li class="nav-item my-auto mr-2">
+                            <a href="{{ route('notifications.index') }}" class="notifications-badge">
+                                <span class="badge badge-{{ Auth::user()->notification_count > 0 ? 'hint' : 'fade' }} "
+                                    title="notification">
+                                    {{ Auth::user()->notification_count }}
+                                </span>
+                            </a>
+                        </li>
                         <li class="nav-item my-auto mr-2"> <a href="{{route('posts.create')}}"><i
                                     class="fas fa-plus"></i></a>
                         </li>

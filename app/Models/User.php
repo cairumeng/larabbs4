@@ -4,13 +4,20 @@ namespace App\Models;
 
 use PDO;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends \TCG\Voyager\Models\User
 {
     use Notifiable;
+
+    public function replyNotify($instance)
+    {
+        if ($this->id !== Auth::id()) {
+            $this->increment('notification_count');
+            $this->notify($instance);
+        }
+    }
 
     /**
      * The attributes that are mass assignable.

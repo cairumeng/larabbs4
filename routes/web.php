@@ -30,3 +30,5 @@ Route::resource('replies', 'RepliesController')->only(['store', 'destroy']);
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
+
+Route::resource('notifications', 'NotificationsController')->only(['index']);

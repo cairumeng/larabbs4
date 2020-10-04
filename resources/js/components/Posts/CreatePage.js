@@ -32,7 +32,7 @@ const CreatePage = () => {
         setMessage(res.data.success)
         setErrors({})
 
-        window.location.href = `/posts/${res.data.post.id}`
+        // window.location.href = `/posts/${res.data.post.id}`
       })
       .catch(err => {
         setErrors(err.response.data.errors)

@@ -56,7 +56,7 @@ const ShowPage = ({ post, authUser, replies }) => {
         setType('success')
         setMessage(res.data.success)
         setErrors({})
-        window.location.href = `/posts/${post.id}`
+        // window.location.href = `/posts/${post.id}`
       })
       .catch(err => {
         setErrors(err.response.data.errors)

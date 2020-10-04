@@ -10911,3 +10911,15 @@ a.text-dark:focus {
   border-bottom: solid 1px whitesmoke;
 }
 
+.notifications-badge {
+  margin-top: -1;
+}
+
+.notifications-badge .badge-fade {
+  background-color: #ebe8e8;
+}
+
+.notifications-badge .badge-hint {
+  background-color: #d15b47 !important;
+}
+
