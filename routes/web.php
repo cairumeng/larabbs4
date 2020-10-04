@@ -24,3 +24,9 @@ Route::resource('posts', 'PostsController')->only(['index', 'create', 'store', '
 Route::post('upload_image', 'UploadController@uploadImage')->name('upload.image');
 
 Route::resource('categories', 'CategoriesController')->only(['show']);
+Route::resource('replies', 'RepliesController')->only(['store', 'destroy']);
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});

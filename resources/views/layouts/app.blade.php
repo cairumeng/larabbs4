@@ -86,6 +86,13 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                @if (Auth::user()->hasRole('admin'))
+                                <a href="{{route('voyager.dashboard')}}" class="dropdown-item">
+                                    <i class="fas fa-users-cog"></i>
+                                    Admin
+                                </a>
+                                @endif
+
                                 <a href="{{route('users.show',Auth::user())}}" class="dropdown-item">
                                     <i class="far fa-user mr-2"></i>
                                     My profile

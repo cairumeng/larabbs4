@@ -120586,7 +120586,30 @@ var ShowPage = function ShowPage(_ref) {
       errors = _useState8[0],
       setErrors = _useState8[1];
 
-  var deleteHandler = function deleteHandler(e) {
+  var _useState9 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(''),
+      _useState10 = _slicedToArray(_useState9, 2),
+      content = _useState10[0],
+      setContent = _useState10[1];
+
+  var deleteReplyHandler = function deleteReplyHandler(e, reply) {
+    e.preventDefault();
+    e.stopPropagation();
+    var result = confirm('Are you sure to delete this item?');
+
+    if (result) {
+      axios["delete"]("/replies/".concat(reply.id)).then(function (res) {
+        setVisibility(true);
+        setType('success');
+        setMessage(res.data.success);
+        setErrors({});
+        window.location.href = "/posts/".concat(post.id);
+      })["catch"](function (err) {
+        setErrors(err.response.data.errors);
+      });
+    }
+  };
+
+  var deletePostHandler = function deletePostHandler(e) {
     e.preventDefault();
     e.stopPropagation();
     axios["delete"]("/posts/".concat(post.id)).then(function (res) {
@@ -120595,6 +120618,24 @@ var ShowPage = function ShowPage(_ref) {
       setMessage(res.data.success);
       setErrors({});
       window.location.href = "/posts";
+    })["catch"](function (err) {
+      setErrors(err.response.data.errors);
+    });
+  };
+
+  var replyHandler = function replyHandler(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    axios.post('/replies', {
+      post_id: post.id,
+      user_id: authUser.id,
+      content: content
+    }).then(function (res) {
+      setVisibility(true);
+      setType('success');
+      setMessage(res.data.success);
+      setErrors({});
+      window.location.href = "/posts/".concat(post.id);
     })["catch"](function (err) {
       setErrors(err.response.data.errors);
     });
@@ -120648,12 +120689,24 @@ var ShowPage = function ShowPage(_ref) {
     className: "d-inline"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     className: "btn btn-light",
-    onClick: deleteHandler
+    onClick: deletePostHandler
   }, "Delete"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "card mt-3"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "card-body"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+    className: "form-control",
+    id: "exampleFormControlTextarea1",
+    rows: "3",
+    name: "content",
+    onChange: function onChange(e) {
+      return setContent(e.target.value);
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    type: "submit",
+    className: "btn btn-primary mt-3",
+    onClick: replyHandler
+  }, "Submit")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), replies.data.length > 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: "list-unstyled"
   }, replies.data.map(function (reply) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
@@ -120679,16 +120732,20 @@ var ShowPage = function ShowPage(_ref) {
       className: "far fa-clock mr-2 ml-3 mr-2"
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_moment__WEBPACK_IMPORTED_MODULE_2___default.a, {
       fromNow: true
-    }, reply.created_at)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    }, reply.created_at)), authUser.id === post.user.id && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
       className: "d-inline float-right"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+      onClick: function onClick(e) {
+        return deleteReplyHandler(e, reply);
+      }
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
       className: "far fa-trash-alt"
-    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, reply.content))));
+    })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, reply.content))));
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "pagination justify-content-center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_util_Pagination__WEBPACK_IMPORTED_MODULE_3__["default"], {
     paginator: replies
-  }))))))));
+  }))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No replies yet~"))))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (ShowPage);

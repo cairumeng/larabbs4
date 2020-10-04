@@ -7,8 +7,29 @@ const ShowPage = ({ post, authUser, replies }) => {
   const [message, setMessage] = useState('')
   const [type, setType] = useState('')
   const [errors, setErrors] = useState({})
+  const [content, setContent] = useState('')
 
-  const deleteHandler = e => {
+  const deleteReplyHandler = (e, reply) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const result = confirm('Are you sure to delete this item?')
+    if (result) {
+      axios
+        .delete(`/replies/${reply.id}`)
+        .then(res => {
+          setVisibility(true)
+          setType('success')
+          setMessage(res.data.success)
+          setErrors({})
+          window.location.href = `/posts/${post.id}`
+        })
+        .catch(err => {
+          setErrors(err.response.data.errors)
+        })
+    }
+  }
+
+  const deletePostHandler = e => {
     e.preventDefault()
     e.stopPropagation()
     axios
@@ -19,6 +40,23 @@ const ShowPage = ({ post, authUser, replies }) => {
         setMessage(res.data.success)
         setErrors({})
         window.location.href = `/posts`
+      })
+      .catch(err => {
+        setErrors(err.response.data.errors)
+      })
+  }
+
+  const replyHandler = e => {
+    e.preventDefault()
+    e.stopPropagation()
+    axios
+      .post('/replies', { post_id: post.id, user_id: authUser.id, content })
+      .then(res => {
+        setVisibility(true)
+        setType('success')
+        setMessage(res.data.success)
+        setErrors({})
+        window.location.href = `/posts/${post.id}`
       })
       .catch(err => {
         setErrors(err.response.data.errors)
@@ -80,7 +118,7 @@ const ShowPage = ({ post, authUser, replies }) => {
                     Edit
                   </a>
                   <form className="d-inline">
-                    <a className="btn btn-light" onClick={deleteHandler}>
+                    <a className="btn btn-light" onClick={deletePostHandler}>
                       Delete
                     </a>
                   </form>
@@ -90,39 +128,64 @@ const ShowPage = ({ post, authUser, replies }) => {
           </div>
           <div className="card mt-3">
             <div className="card-body">
-              <ul className="list-unstyled">
-                {replies.data.map(reply => (
-                  <li key={reply.id} className="mt-3">
-                    <div className="media">
-                      <a href={`/users/${reply.user_id}`}>
-                        <img
-                          className="mr-3 edit-avatar"
-                          src={reply.user.avatar}
-                          alt="Generic placeholder image"
-                        />
-                      </a>
-                      <div className="media-body">
-                        <div className="mt-0">
-                          <a href={`/users/${reply.user_id}`}>
-                            {reply.user.name}
-                          </a>
-                          <div className="d-inline">
-                            <i className="far fa-clock mr-2 ml-3 mr-2" />
-                            <Moment fromNow>{reply.created_at}</Moment>
+              <form>
+                <textarea
+                  className="form-control"
+                  id="exampleFormControlTextarea1"
+                  rows="3"
+                  name="content"
+                  onChange={e => setContent(e.target.value)}
+                ></textarea>
+                <button
+                  type="submit"
+                  className="btn btn-primary mt-3"
+                  onClick={replyHandler}
+                >
+                  Submit
+                </button>
+              </form>
+              <hr />
+              {replies.data.length > 0 ? (
+                <ul className="list-unstyled">
+                  {replies.data.map(reply => (
+                    <li key={reply.id} className="mt-3">
+                      <div className="media">
+                        <a href={`/users/${reply.user_id}`}>
+                          <img
+                            className="mr-3 edit-avatar"
+                            src={reply.user.avatar}
+                            alt="Generic placeholder image"
+                          />
+                        </a>
+                        <div className="media-body">
+                          <div className="mt-0">
+                            <a href={`/users/${reply.user_id}`}>
+                              {reply.user.name}
+                            </a>
+                            <div className="d-inline">
+                              <i className="far fa-clock mr-2 ml-3 mr-2" />
+                              <Moment fromNow>{reply.created_at}</Moment>
+                            </div>
+                            {authUser.id === post.user.id && (
+                              <form className="d-inline float-right">
+                                <a onClick={e => deleteReplyHandler(e, reply)}>
+                                  <i className="far fa-trash-alt" />
+                                </a>
+                              </form>
+                            )}
                           </div>
-                          <div className="d-inline float-right">
-                            <i className="far fa-trash-alt"></i>
-                          </div>
+                          <div>{reply.content}</div>
                         </div>
-                        <div>{reply.content}</div>
                       </div>
-                    </div>
-                  </li>
-                ))}
-                <div className="pagination justify-content-center">
-                  <Pagination paginator={replies} />
-                </div>
-              </ul>
+                    </li>
+                  ))}
+                  <div className="pagination justify-content-center">
+                    <Pagination paginator={replies} />
+                  </div>
+                </ul>
+              ) : (
+                <div>No replies yet~</div>
+              )}
             </div>
           </div>
         </div>
